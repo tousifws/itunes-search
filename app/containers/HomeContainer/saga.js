@@ -1,7 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { getRepos } from '@services/repoApi';
 import { homeContainerTypes, homeContainerCreators } from './reducer';
-
 const { REQUEST_GET_GITHUB_REPOS } = homeContainerTypes;
 const { successGetGithubRepos, failureGetGithubRepos } = homeContainerCreators;
 export function* getGithubRepos(action) {
