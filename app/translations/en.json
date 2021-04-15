@@ -7,13 +7,17 @@
   "matching_repos": "Total number of matching repos: {totalCount}",
   "something_went_wrong": "Sorry. Something went wrong! Please try again in sometime.",
   "stories": "Go to Storybook",
+  "musics": "Go to Itunes Musics",
   "repository_name": "Repository Name: {name}",
   "repository_full_name": "Repository full name: {fullName}",
   "repository_stars": "Repository stars: {stars}",
   "wednesday_solutions": "Wednesday Solutions",
   "music_list": "Music List",
   "music_search": "Music Search",
-  "muisc_search_default": "Search for a music by entering it's name in the search box",
+  "music_search_default": "Search for a music by entering it's name in the search box",
   "get_music_details": "Get details of musics",
-  "music_title": "Music Title: {title}"
+  "music_title": "Music Title: {title}",
+  "artist_name": "Artist: {artistName}",
+  "music_collection_name": "Music collection name: {collectionName}",
+  "matching_musics": "Total number of matching musics: {totalCount}"
 }
