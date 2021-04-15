@@ -39,6 +39,7 @@ const Container = styled.div`
 `;
 const RightContent = styled.div`
   display: flex;
+  flex-direction: column;
   align-self: flex-end;
 `;
 export function HomeContainer({
@@ -129,10 +130,17 @@ export function HomeContainer({
     history.push('stories');
     window.location.reload();
   };
+
+  const gotToMusics = () => {
+    history.push('/musics');
+    window.location.reload();
+  };
+
   return (
     <Container maxwidth={maxwidth} padding={padding}>
       <RightContent>
         <Clickable textId="stories" onClick={refreshPage} />
+        <Clickable textId="musics" onClick={gotToMusics} />
       </RightContent>
       <CustomCard title={intl.formatMessage({ id: 'repo_search' })} maxwidth={maxwidth}>
         <T marginBottom={10} id="get_repo_details" />
