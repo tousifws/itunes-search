@@ -14,7 +14,7 @@ import T from '@components/T';
 import Clickable from '@components/Clickable';
 import { useInjectSaga } from 'utils/injectSaga';
 import { selectMusicContainer, selectMusicsData, selectMusicsError, selectMusicTitle } from './selectors';
-import { MusicContainerCreators } from './reducer';
+import { musicContainerCreators } from './reducer';
 import saga from './saga';
 
 const { Search } = Input;
@@ -47,10 +47,11 @@ export function MusicContainer({
   intl,
   musicsData = {},
   musicsError = null,
-  musicTitle,
+  searchQuery,
   maxwidth,
   padding
 }) {
+  // console.log("musicsData", musicsData);
   useInjectSaga({ key: 'MusicContainer', saga });
   const [loading, setLoading] = useState(false);
 
@@ -62,8 +63,8 @@ export function MusicContainer({
   }, [musicsData]);
 
   useEffect(() => {
-    if (musicTitle && !musicsData?.items?.length) {
-      dispatchItunesMusics(musicTitle);
+    if (searchQuery && !musicsData?.items?.length) {
+      dispatchItunesMusics(searchQuery);
       setLoading(true);
     }
   }, []);
@@ -80,28 +81,29 @@ export function MusicContainer({
   };
   const debouncedHandleOnChange = debounce(handleOnChange, 200);
 
-  const renderRepoList = () => {
-    const items = get(musicsData, 'items', []);
-    const totalCount = get(musicsData, 'totalCount', 0);
+  const renderMusicList = () => {
+    const items = get(musicsData, 'results', []);
+    const totalCount = get(musicsData, 'resultCount', 0);
+
     return (
       (items.length !== 0 || loading) && (
         <CustomCard>
           <Skeleton loading={loading} active>
-            {musicTitle && (
+            {searchQuery && (
               <div>
-                <T id="search_query" values={{ musicTitle }} />
+                <T id="search_query" values={{ searchQuery }} />
               </div>
             )}
             {totalCount !== 0 && (
               <div>
-                <T id="matching_repos" values={{ totalCount }} />
+                <T id="matching_musics" values={{ totalCount }} />
               </div>
             )}
             {items.map((item, index) => (
               <CustomCard key={index}>
-                <T id="repository_name" values={{ name: item.name }} />
-                <T id="repository_full_name" values={{ fullName: item.fullName }} />
-                <T id="repository_stars" values={{ stars: item.stargazersCount }} />
+                <T id="music_title" values={{ title: item.trackName }} />
+                <T id="artist_name" values={{ artistName: item.artistName }} />
+                <T id="music_collection_name" values={{ collectionName: item.collectionName }} />
               </CustomCard>
             ))}
           </Skeleton>
@@ -114,12 +116,12 @@ export function MusicContainer({
     if (musicsError) {
       repoError = musicsError;
     } else if (!get(musicsData, 'totalCount', 0)) {
-      repoError = 'respo_search_default';
+      repoError = 'music_search_default';
     }
     return (
       !loading &&
       repoError && (
-        <CustomCard color={musicsError ? 'red' : 'grey'} title={intl.formatMessage({ id: 'repo_list' })}>
+        <CustomCard color={musicsError ? 'red' : 'grey'} title={intl.formatMessage({ id: 'music_list' })}>
           <T id={repoError} />
         </CustomCard>
       )
@@ -134,18 +136,18 @@ export function MusicContainer({
       <RightContent>
         <Clickable textId="stories" onClick={refreshPage} />
       </RightContent>
-      <CustomCard title={intl.formatMessage({ id: 'repo_search' })} maxwidth={maxwidth}>
-        <T marginBottom={10} id="get_repo_details" />
+      <CustomCard title={intl.formatMessage({ id: 'music_search' })} maxwidth={maxwidth}>
+        <T marginBottom={10} id="get_music_details" />
         <Search
           data-testid="search-bar"
-          defaultValue={musicTitle}
+          defaultValue={searchQuery}
           type="text"
           onChange={evt => debouncedHandleOnChange(evt.target.value)}
           onSearch={searchText => debouncedHandleOnChange(searchText)}
           enterButton
         />
       </CustomCard>
-      {renderRepoList()}
+      {renderMusicList()}
       {renderErrorState()}
     </Container>
   );
@@ -161,7 +163,7 @@ MusicContainer.propTypes = {
     items: PropTypes.array
   }),
   musicsError: PropTypes.string,
-  musicTitle: PropTypes.string,
+  searchQuery: PropTypes.string,
   history: PropTypes.object,
   maxwidth: PropTypes.number,
   padding: PropTypes.number
@@ -176,14 +178,14 @@ const mapStateToProps = createStructuredSelector({
   MusicContainer: selectMusicContainer(),
   musicsData: selectMusicsData(),
   musicsError: selectMusicsError(),
-  musicTitle: selectMusicTitle()
+  searchQuery: selectMusicTitle()
 });
 
 function mapDispatchToProps(dispatch) {
-  const { requestGetItunesMusics, clearItunesMusics } = MusicContainerCreators;
+  const { requestGetItunesMusics, clearItunesMusics } = musicContainerCreators;
 
   return {
-    dispatchItunesMusics: musicTitle => dispatch(requestGetItunesMusics(musicTitle)),
+    dispatchItunesMusics: searchQuery => dispatch(requestGetItunesMusics(searchQuery)),
     dispatchClearItunesMusics: () => dispatch(clearItunesMusics())
   };
 }

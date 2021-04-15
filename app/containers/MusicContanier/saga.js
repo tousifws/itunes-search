@@ -1,12 +1,12 @@
 import { getMusics } from '@services/musicApi';
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { musicContainerTypes, musicContainerCreators } from './reducer';
+import { musicContainerCreators, musicContainerTypes } from './reducer';
 
 const { REQUEST_GET_ITUNES_MUSICS } = musicContainerTypes;
 const { successGetItunesMusics, failureGetItunesMusics } = musicContainerCreators;
 
 export function* getItunesMusics(action) {
-  const response = yield call(getMusics, action.musicName);
+  const response = yield call(getMusics, action.searchQuery);
   const { data, ok } = response;
 
   if (ok) {

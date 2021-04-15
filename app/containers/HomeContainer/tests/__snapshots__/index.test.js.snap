@@ -7,7 +7,7 @@ exports[`<HomeContainer /> tests should render and match the snapshot 1`] = `
       class="HomeContainer__Container-l0s8pp-1 eLjtlX"
     >
       <div
-        class="HomeContainer__RightContent-l0s8pp-2 ktRuf"
+        class="HomeContainer__RightContent-l0s8pp-2 gJvWMC"
       >
         <div
           class="Clickable__StyledClickable-sc-19lp5om-0 avquq"
@@ -18,6 +18,17 @@ exports[`<HomeContainer /> tests should render and match the snapshot 1`] = `
             data-testid="t"
           >
             Go to Storybook
+          </p>
+        </div>
+        <div
+          class="Clickable__StyledClickable-sc-19lp5om-0 avquq"
+          data-testid="clickable"
+        >
+          <p
+            class="T__StyledText-gjlic1-0 cbAvsY"
+            data-testid="t"
+          >
+            Go to Itunes Musics
           </p>
         </div>
       </div>

@@ -7,16 +7,16 @@ import produce from 'immer';
 import { createActions } from 'reduxsauce';
 import get from 'lodash/get';
 
-export const { Types: musicsContainerTypes, Creators: musicsContainerCreators } = createActions({
+export const { Types: musicContainerTypes, Creators: musicContainerCreators } = createActions({
   requestGetItunesMusics: ['searchTerm'],
-  successGetItunesMusics: ['musics'],
+  successGetItunesMusics: ['data'],
   failureGetItunesMusics: ['error'],
   clearItunesMusics: []
 });
 
 export const initialState = {
   searchTerm: null,
-  musics: {},
+  musicsData: {},
   musicsError: null
 };
 
@@ -24,18 +24,18 @@ export const initialState = {
 export const musicContainerReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case musicsContainerTypes.REQUEST_GET_ITUNES_MUSICS:
+      case musicContainerTypes.REQUEST_GET_ITUNES_MUSICS:
         draft.searchTerm = action.searchTerm;
         break;
 
-      case musicsContainerTypes.CLEAR_ITUNES_MUSICS:
+      case musicContainerTypes.CLEAR_ITUNES_MUSICS:
         return initialState;
 
-      case musicsContainerTypes.SUCCESS_GET_ITUNES_MUSICS:
-        draft.musics = action.musics;
+      case musicContainerTypes.SUCCESS_GET_ITUNES_MUSICS:
+        draft.musicsData = action.data;
         break;
 
-      case musicsContainerTypes.FAILURE_GET_ITUNES_MUSICS:
+      case musicContainerTypes.FAILURE_GET_ITUNES_MUSICS:
         draft.musicsError = get(action.error, 'message', 'something_went_wrong');
         break;
     }
