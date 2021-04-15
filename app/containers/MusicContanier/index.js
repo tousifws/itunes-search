@@ -42,10 +42,10 @@ const RightContent = styled.div`
   align-self: flex-end;
 `;
 export function MusicContainer({
-  dispatchGithubRepos,
-  dispatchClearGithubRepos,
+  dispatchItunesMusics,
+  dispatchClearItunesMusics,
   intl,
-  reposData = {},
+  musicsData = {},
   musicsError = null,
   musicTitle,
   maxwidth,
@@ -55,15 +55,15 @@ export function MusicContainer({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const loaded = get(reposData, 'items', null) || musicsError;
+    const loaded = get(musicsData, 'items', null) || musicsError;
     if (loading && loaded) {
       setLoading(false);
     }
-  }, [reposData]);
+  }, [musicsData]);
 
   useEffect(() => {
-    if (musicTitle && !reposData?.items?.length) {
-      dispatchGithubRepos(musicTitle);
+    if (musicTitle && !musicsData?.items?.length) {
+      dispatchItunesMusics(musicTitle);
       setLoading(true);
     }
   }, []);
@@ -72,17 +72,17 @@ export function MusicContainer({
 
   const handleOnChange = rName => {
     if (!isEmpty(rName)) {
-      dispatchGithubRepos(rName);
+      dispatchItunesMusics(rName);
       setLoading(true);
     } else {
-      dispatchClearGithubRepos();
+      dispatchClearItunesMusics();
     }
   };
   const debouncedHandleOnChange = debounce(handleOnChange, 200);
 
   const renderRepoList = () => {
-    const items = get(reposData, 'items', []);
-    const totalCount = get(reposData, 'totalCount', 0);
+    const items = get(musicsData, 'items', []);
+    const totalCount = get(musicsData, 'totalCount', 0);
     return (
       (items.length !== 0 || loading) && (
         <CustomCard>
@@ -113,7 +113,7 @@ export function MusicContainer({
     let repoError;
     if (musicsError) {
       repoError = musicsError;
-    } else if (!get(reposData, 'totalCount', 0)) {
+    } else if (!get(musicsData, 'totalCount', 0)) {
       repoError = 'respo_search_default';
     }
     return (
@@ -152,10 +152,10 @@ export function MusicContainer({
 }
 
 MusicContainer.propTypes = {
-  dispatchGithubRepos: PropTypes.func,
-  dispatchClearGithubRepos: PropTypes.func,
+  dispatchItunesMusics: PropTypes.func,
+  dispatchClearItunesMusics: PropTypes.func,
   intl: PropTypes.object,
-  reposData: PropTypes.shape({
+  musicsData: PropTypes.shape({
     totalCount: PropTypes.number,
     incompleteResults: PropTypes.bool,
     items: PropTypes.array
